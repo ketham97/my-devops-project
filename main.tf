@@ -12,6 +12,22 @@ provider "aws" {
   region = var.aws_region
 }
 
+# Data source to find the latest Ubuntu 22.04 LTS AMI automatically
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"]  # Canonical (Ubuntu official)
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 # VPC - Virtual Private Cloud (Your private network in AWS)
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr_block
@@ -108,7 +124,7 @@ resource "aws_security_group" "main" {
 
 # EC2 Instance - Your virtual server
 resource "aws_instance" "main" {
-  ami           = var.ami_id  # Ubuntu 22.04 LTS
+  ami           = data.aws_ami.ubuntu.id  # Dynamically finds latest Ubuntu image
   instance_type = var.instance_type
 
   subnet_id                   = aws_subnet.main.id
