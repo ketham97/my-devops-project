@@ -25,5 +25,5 @@ variable "availability_zone" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t2.micro"  # Free tier eligible
+  default     = "t2.small"  # t2.micro is no longer free tier eligible on your account
 }
