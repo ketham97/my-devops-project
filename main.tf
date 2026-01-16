@@ -12,22 +12,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Data source to find the latest Ubuntu 22.04 LTS AMI automatically
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720109477"]  # Canonical (Ubuntu official)
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
 # VPC - Virtual Private Cloud (Your private network in AWS)
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr_block
@@ -82,13 +66,13 @@ resource "aws_route_table_association" "main" {
 # Security Group - Firewall that controls who can access your EC2
 resource "aws_security_group" "main" {
   name        = "main-security-group"
-  description = "Allow HTTP, HTTPS, and SSH"
+  description = "Allow RDP, HTTP, and HTTPS for Windows Server"
   vpc_id      = aws_vpc.main.id
 
-  # Allow SSH (port 22) - for remote login
+  # Allow RDP (port 3389) - for Windows Remote Desktop
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = 3389
+    to_port     = 3389
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # WARNING: Open to everyone. Restrict in production!
   }
@@ -124,8 +108,8 @@ resource "aws_security_group" "main" {
 
 # EC2 Instance - Your virtual server
 resource "aws_instance" "main" {
-  ami           = data.aws_ami.ubuntu.id  # Latest Ubuntu 22.04 LTS
-  instance_type = var.instance_type
+  ami           = var.ami_id  # Windows Server 2022 Datacenter - Free tier eligible
+  instance_type = "t2.micro"  # Free tier eligible
 
   subnet_id                   = aws_subnet.main.id
   vpc_security_group_ids      = [aws_security_group.main.id]
