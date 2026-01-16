@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region"
   type        = string
-  default     = "us-east-1"
+  default     = "ca-central-1"  # Canada Central
 }
 
 variable "vpc_cidr_block" {
@@ -19,7 +19,7 @@ variable "subnet_cidr_block" {
 variable "availability_zone" {
   description = "Availability zone for the subnet"
   type        = string
-  default     = "us-east-1a"
+  default     = "ca-central-1a"
 }
 
 variable "instance_type" {
