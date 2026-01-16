@@ -12,19 +12,19 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Data source to find the latest Windows Server 2022 Base AMI automatically
-data "aws_ami" "windows" {
+# Data source to find the latest Ubuntu 22.04 LTS AMI automatically
+data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["amazon"]  # Amazon official AMIs
+  owners      = ["099720109477"]  # Canonical (Ubuntu official)
 
   filter {
     name   = "name"
-    values = ["Windows_Server-2022-Base*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
   filter {
-    name   = "state"
-    values = ["available"]
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
 }
 
@@ -124,7 +124,7 @@ resource "aws_security_group" "main" {
 
 # EC2 Instance - Your virtual server
 resource "aws_instance" "main" {
-  ami           = data.aws_ami.windows.id  # Dynamically finds latest Windows Server 2025
+  ami           = data.aws_ami.ubuntu.id  # Latest Ubuntu 22.04 LTS
   instance_type = var.instance_type
 
   subnet_id                   = aws_subnet.main.id
