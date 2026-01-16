@@ -25,7 +25,7 @@ variable "availability_zone" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t2.micro"  # Free tier eligible
+  default     = "t2.small"  # t2.small is the smallest free tier eligible for Windows
 }
 
 variable "ami_id" {
