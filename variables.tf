@@ -27,3 +27,9 @@ variable "instance_type" {
   type        = string
   default     = "t2.small"  # t2.micro is no longer free tier eligible on your account
 }
+
+variable "ami_id" {
+  description = "AMI ID for Windows Server 2025 Base"
+  type        = string
+  default     = "ami-024bf1f86e73d89e5"  # Windows Server 2025 Base - Free tier eligible
+}
