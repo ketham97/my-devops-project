@@ -27,9 +27,3 @@ variable "instance_type" {
   type        = string
   default     = "t2.micro"  # Free tier eligible
 }
-
-variable "ami_id" {
-  description = "AMI ID for Ubuntu 22.04 LTS (us-east-1)"
-  type        = string
-  default     = "ami-0c55b159cbfafe1f0"  # Update this for your region
-}
