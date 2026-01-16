@@ -12,6 +12,22 @@ provider "aws" {
   region = var.aws_region
 }
 
+# Data source to find the latest Windows Server 2025 Base AMI automatically
+data "aws_ami" "windows" {
+  most_recent = true
+  owners      = ["801119661308"]  # Amazon official Windows AMIs owner
+
+  filter {
+    name   = "name"
+    values = ["Windows_Server-2025-Base-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 # VPC - Virtual Private Cloud (Your private network in AWS)
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr_block
@@ -108,7 +124,7 @@ resource "aws_security_group" "main" {
 
 # EC2 Instance - Your virtual server
 resource "aws_instance" "main" {
-  ami           = var.ami_id  # Windows Server 2025 Base
+  ami           = data.aws_ami.windows.id  # Dynamically finds latest Windows Server 2025
   instance_type = var.instance_type
 
   subnet_id                   = aws_subnet.main.id

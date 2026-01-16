@@ -25,11 +25,5 @@ variable "availability_zone" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t2.small"  # t2.micro is no longer free tier eligible on your account
-}
-
-variable "ami_id" {
-  description = "AMI ID for Windows Server 2025 Base"
-  type        = string
-  default     = "ami-024bf1f86e73d89e5"  # Windows Server 2025 Base - Free tier eligible
+  default     = "t2.micro"  # Windows Server 2025 is free tier eligible with t2.micro
 }
