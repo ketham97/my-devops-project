@@ -15,16 +15,16 @@ provider "aws" {
 # Data source to find the latest Windows Server 2025 Base AMI automatically
 data "aws_ami" "windows" {
   most_recent = true
-  owners      = ["801119661308"]  # Amazon official Windows AMIs owner
+  owners      = ["amazon"]  # Amazon official AMIs
 
   filter {
     name   = "name"
-    values = ["Windows_Server-2025-Base-*"]
+    values = ["Windows_Server-2025-Base*"]
   }
 
   filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 }
 
