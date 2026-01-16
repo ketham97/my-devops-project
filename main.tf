@@ -12,19 +12,19 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Data source to find the latest Windows Server 2025 Base AMI automatically
+# Data source to find the latest Windows Server 2022 Base AMI automatically
 data "aws_ami" "windows" {
   most_recent = true
   owners      = ["amazon"]  # Amazon official AMIs
 
   filter {
     name   = "name"
-    values = ["Windows_Server-2025-Base*"]
+    values = ["Windows_Server-2022-Base*"]
   }
 
   filter {
-    name   = "root-device-type"
-    values = ["ebs"]
+    name   = "state"
+    values = ["available"]
   }
 }
 
